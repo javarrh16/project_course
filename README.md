@@ -14,7 +14,7 @@ For this project I have created TWO PREDICTORS that succesfully predict if the a
 
 --The first predictor: BE_pred can be run as "python /project_course/projects/scripts/BE_pred.py". BE_pred is a very fast predictor, however the accuracy was slightly compromised since no PSI-Blast is run for the sequence analysis.
 
---The second predictor: BE_pred_plus can be run as "bash /project_course/projects/scripts/BE_pred_plus.sh". BE_pred_plus uses a PSI-Blast analysis for a more accurate prediction of the buried/exposed state. This, makes the program take a bit more time to run but the prediction is much more accurate! It is reccommended to use BE_pred_plus.
+--The second predictor: BE_pred_plus can be run as "bash /project_course/projects/scripts/BE_pred_plus.sh". To be able to run BE_pred_plus you have to download the model "modelpssm_ran_7_1000.00/.01/.02 UNZIP them and CONCATENATE them. The model was too big too upload it so it had to be splited and compressed. BE_pred_plus uses a PSI-Blast analysis for a more accurate prediction of the buried/exposed state. This, makes the program take a bit more time to run but the prediction is much more accurate! It is reccommended to use BE_pred_plus.
 
 
 
