@@ -19,16 +19,17 @@ word_list = []
 mfeature_list = []
 cword_list = []
 sepn_list = []
-
+list_length = []
 
 #define window size
 windows = int(input('Input window size as an odd integer number: '))
 
 #create 3 different list separating titles, sequences and structures. In the process we have added 'X' to the begining and end of the sequences (depending on the windowsize) so we can predict the structure features for the first and last characters of the sequence as well.
-for i in range (0, len(list_all), 3):
-	#list_title.append(list_all[i])
+for i in range (0, len(list_all), 2): # 3 in case of doc with stru information after seq!
+	list_title.append(list_all[i])
+	list_length.append(len(list_all[i+1]))
 	list_seq.append((math.floor(windows/2))*'X'+list_all[i+1]+(math.floor(windows/2))*'X')
-	list_stru.append((math.floor(windows/2))*'X'+list_all[i+2]+(math.floor(windows/2))*'X')
+	#list_stru.append((math.floor(windows/2))*'X'+list_all[i+2]+(math.floor(windows/2))*'X')
 
 #makes a list of every sequence so that each element is one aa
 for seq in list_seq:
@@ -38,10 +39,10 @@ for seq in list_seq:
 		word_list.append(aa_list[aa:aa+windows])
 
 #We have created mfeature list containing only the middle feature of the structure words depending on the window size.  
-for structure in list_stru:
-	feat_list = list (structure)
-	for feature in range (int(windows/2), len(feat_list)-math.floor(windows/2)):
-		mfeature_list.append(feat_list[feature])
+#for structure in list_stru:
+#	feat_list = list (structure)
+#	for feature in range (int(windows/2), len(feat_list)-math.floor(windows/2)):
+#		mfeature_list.append(feat_list[feature])
 
 #translate amino acids into numerical code
 from aa_dictionary import aa_dict
@@ -52,11 +53,11 @@ for a in range (0, len(word_list)):
 				word_list[a][b] = aa_dict[key]
 
 #translate structure features into numerical code and in the last step also change them into integers
-from structure_dict import structure_dict
-for feature in range(0, len(mfeature_list)):
-    for key in structure_dict:
-        if key == mfeature_list [feature]:
-            mfeature_list[feature] = int(structure_dict[key])
+#from structure_dict import structure_dict
+#for feature in range(0, len(mfeature_list)):
+#    for key in structure_dict:
+#        if key == mfeature_list [feature]:
+#            mfeature_list[feature] = int(structure_dict[key])
 
 #We have joined the individual codes for every amino acid in to a codeword and saved in cword_list.
 cword = str()
@@ -92,12 +93,11 @@ with open('/home/u2208/project_course/projects/output/mfeature_list%d.txt' %wind
 	for i in mfeature_list:
 		mfl.write(str(i)+'\n')
 
+#We also safe the list of the length of the sequences to be able to use it for the cross-validation.
+with open('/home/u2208/project_course/projects/output/list_length.txt', 'w+') as l_len:
+	for i in list_length:
+		l_len.write(str(i)+'\n')
 
-
-
-#WAYS TO IMPROVE SCRIPT:
-#-remove aa_list and do the same operations with seq_list instead -> removes some loops
-#-To optimize it is good if we can have as many processes in every step as possible to reduce time and storing space
 
 
 
