@@ -39,7 +39,7 @@ for line in f:
 print(datetime.now() - start)
 
 #here I am creating a loop to test the different windows
-for all_windows in range(5,13,2):
+for all_windows in range(7,9,2):
     windows = all_windows
     print('The window size for this seq is: ', windows)
     list_title = []
@@ -136,7 +136,7 @@ for all_windows in range(5,13,2):
     counter= 0
     complete_mcc = 0
     
-    #clf = RandomForestClassifier().fit(X_train, Y_train)
+    clf = RandomForestClassifier(n_estimators=1000)
     #clf = svm.LinearSVC(C=1)
     print("Machine learning with leave one out in process...")
     print()
@@ -145,8 +145,8 @@ for all_windows in range(5,13,2):
         Y_test = mfeature_list[list_lengthf[i-1]:list_lengthf[i]]
         X_train = word_listflat[0:list_lengthf[i-1]]+word_listflat[list_lengthf[i]:len(list_lengthf)]
         Y_train = mfeature_list[0:list_lengthf[i-1]]+mfeature_list[list_lengthf[i]:len(list_lengthf)]
-        parameters = {'n_estimators': [70, 100, 500, 1000]}
-        clf = GridSearchCV(RandomForestClassifier(), parameters)
+        #parameters = {'n_estimators': [100, 500, 1000]}
+        #clf = GridSearchCV(RandomForestClassifier(), parameters)
         Y_train = [j for i in Y_train for j in i] 
         clf.fit(X_train, Y_train)
         Y_pred = clf.predict(X_test)
@@ -159,9 +159,9 @@ for all_windows in range(5,13,2):
         counter = counter + 1
         mcc = matthews_corrcoef(Y_test, Y_pred)
         complete_mcc = complete_mcc + mcc
-    print()
-    print('Best parameters set found on development set: ')
-    print(clf.best_estimator_)
+    #print()
+    #print('Best parameters set found on development set: ')
+    #print(clf.best_estimator_)
     print('Summarized results:')
     print('The mean precision with the model is: ', precision/56)
     print('The mean recall with the model is: ', recall/56)
@@ -169,7 +169,7 @@ for all_windows in range(5,13,2):
     print('The mean support with the model is: ', support/56)
     print('The Matthews correlation coefficient is: ', complete_mcc/56)
 
-sys.exit()
+#sys.exit()
 ###############################################################################################################################
 #This way of doint the svm works!!! but cross validation is not optimal for me because leave one out is not happening. worst case i could do a loop over the train_test_split so that this process is repeated e.g.56 times and then just mean the scores for more precision.............
 
@@ -204,7 +204,7 @@ sys.exit()
 
 #This step is done to safe the model so it doesn't have to be trained every time we want to predict something
 
-joblib.dump(clf, 'modelpssm_9_C1')
+joblib.dump(clf, 'modelpssm_ran_7_1000')
 
 #To call back the model (and give it the name again of clf) we use the following:
 #clf = joblib.load('modelpssm_9_C1')
